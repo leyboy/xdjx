@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xdjx.dao.AdminDao">
+	<resultMap type="_admin" id="adminMap">
+		<id column="admin_id" property="id" />
+		<result column="admin_name" property="name" />
+		<result column="admin_pwd" property="password" />
+		<result column="is_delete" property="delete" />
+	</resultMap>
+
+
+	<insert id="insertAdmin" parameterType="_admin" keyProperty="Id"
+		keyColumn="admin_id">
+		insert into tb_admin(admin_name,admin_pwd)
+		values(#{name},#{password})
+	</insert>
+
+	<select id="getAdminById" parameterType="int" resultMap="adminMap">
+		select
+		admin_id,admin_name,admin_pwd,is_delete from tb_admin
+		<where>
+			is_delete
+			= 0
+			and admin_id =
+			#{adminId}
+		</where>
+	</select>
+
+
+	<select id="listAllAdmins" resultMap="adminMap">
+		select
+		admin_id,admin_name,admin_pwd,is_delete from tb_admin
+		<where>
+			is_delete = 0
+		</where>
+	</select>
+
+	<update id="deleteAdminById" parameterType="int" keyColumn="admin_id"
+		keyProperty="Id">
+		update tb_admin set is_delete = 1 where admin_id =
+		#{adminId}
+	</update>
+
+	<update id="updateAdminById" parameterType="_admin" keyColumn="admin_id"
+		keyProperty="Id">
+		update tb_admin
+		<set>
+			<trim suffixOverrides=",">
+				<if test="name != null and name != '' ">
+					admin_name = #{name} ,
+				</if>
+				<if test="password != null and password != '' ">
+					admin_pwd = #{password}
+				</if>
+			</trim>
+		</set>
+		<where>
+			is_delete = 0
+		</where>
+	</update>
+</mapper>
