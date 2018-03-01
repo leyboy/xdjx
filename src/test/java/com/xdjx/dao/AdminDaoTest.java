@@ -58,4 +58,5 @@ public class AdminDaoTest {
 	protected Admin getAdminById(int adminId) {
 		return adminDao.getAdminById(adminId);
 	}
+	
 }
